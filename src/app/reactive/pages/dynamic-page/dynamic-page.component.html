@@ -1,17 +1,19 @@
 <h2>Reactivos: <small> Dinámicos </small></h2>
 <hr>
 
-<form autocomplete="off">
+<form autocomplete="off" [formGroup]="myForm">
 
   <!-- Nombre -->
   <div class="mb-3 row">
     <label class="col-sm-3 col-form-label">Nombre</label>
     <div class="col-sm-9">
       <input class="form-control"
+             formControlName="name"
              placeholder="Nombre de la persona">
-      <span class="form-text text-danger">
-                   error message
-            </span>
+      <span *ngIf="isValidField('name')"
+        class="form-text text-danger">
+          {{ getFieldError('name') }}
+      </span>
     </div>
   </div>
 
@@ -22,6 +24,7 @@
 
       <div class="input-group">
         <input class="form-control"
+               [formControl]="newFavorite"
                placeholder="Agregar favorito">
 
 
@@ -37,21 +40,25 @@
   <!-- Lista de Juegos Favoritos -->
   <div class="mb-3 row">
     <label class="col-sm-3 col-form-label">Favoritos</label>
-    <div class="col-sm-9">
-
-      <div class="mb-1">
+    <!-- aqui le esta diciendo, oye papi, lo que sigue va a ser un arreglo y va a tener campos iterables -->
+    <div class="col-sm-9" formArrayName="favoriteGames">
+      <!-- aqui empieza la parte iterable, y estamos sacando la posicion del arreglo -->
+      <div class="mb-1" *ngFor="let favorite of favoriteGames.controls; let i = index">
 
         <div class="input-group">
-          <input class="form-control">
+          <!-- y aqui le estamos asignando, que de ese arreglo, este tiene la posicion 0,1,n... -->
+          <input [formControlName]="i"
+            class="form-control">
 
           <button class="btn btn-outline-danger"
-                  type="button">
+                  type="button"
+                  (click)="onDeleteFavorite(i)">
             Eliminar
           </button>
         </div>
         <span class="form-text text-danger">
-                   Este campo es requerido
-                </span>
+           Este campo es requerido
+        </span>
 
       </div>
 
@@ -64,6 +71,7 @@
     <div class="col-sm-12">
       <button type="submit"
               class="btn btn-primary float-end"
+              (click)="onSubmit()"
       >
         <!-- [disabled]="myForm.invalid" -->
         Guardar
