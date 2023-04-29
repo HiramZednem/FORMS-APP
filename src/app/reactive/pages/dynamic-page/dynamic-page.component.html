@@ -29,7 +29,8 @@
 
 
         <button class="btn btn-outline-primary"
-                type="button">
+                type="button"
+                (click)="onAddToFavorites()">
           Agregar favorito
         </button>
       </div>
@@ -56,7 +57,7 @@
             Eliminar
           </button>
         </div>
-        <span class="form-text text-danger">
+        <span class="form-text text-danger" *ngIf="isValidFieldInArray(favoriteGames, i)">
            Este campo es requerido
         </span>
 

@@ -15,7 +15,7 @@ export class DynamicPageComponent {
   });
 
   //el FocmControl, sirve para asignar un independiente
-  public newFavorite: FormControl = new FormControl<string>('', Validators.required)
+  public newFavorite: FormControl = new FormControl<string>('', Validators.required);
 
   constructor(private fb: FormBuilder) { }
 
@@ -27,6 +27,11 @@ export class DynamicPageComponent {
   isValidField( field: string ):boolean | null {
     return this.myForm.controls[field].errors
       && this.myForm.controls[field].touched
+  }
+
+  isValidFieldInArray( formArray: FormArray, index: number ) {
+    return formArray.controls[index].errors
+      && formArray.controls[index].touched;
   }
 
   getFieldError( field: string ): string | null {
@@ -45,7 +50,15 @@ export class DynamicPageComponent {
     return null;
   }
 
-  onAddToFavorites(  ) {
+  onAddToFavorites() {
+    if ( this.newFavorite.invalid ) return;
+    const newGame = this.newFavorite.value;
+
+    this.favoriteGames.push(
+      this.fb.control( newGame, Validators.required )
+    );
+
+    this.newFavorite.reset();
 
   }
 
@@ -59,8 +72,9 @@ export class DynamicPageComponent {
       return;
     }
 
-    console.log( this.myForm.value )
+    console.log( this.myForm.value );
 
+    (this.myForm.controls['favoriteGames'] as FormArray) = this.fb.array([]);
     this.myForm.reset()
   }
 
