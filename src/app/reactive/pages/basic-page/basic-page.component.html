@@ -16,9 +16,8 @@
                  placeholder="Nombre del producto"
                  formControlName="name">
 
-          <span class="form-text text-danger">
-              <!-- Debe de ser de 3 letras -->
-              error message
+          <span class="form-text text-danger" *ngIf="myForm.controls['name'].errors && myForm.controls['name'].touched">
+              {{ myForm.controls['name'].errors.hasOwnProperty('required') ? 'Este campo es requerido' : 'Este campo requiere minimo 3 letras' }}
           </span>
         </div>
       </div>

@@ -31,11 +31,20 @@ export class BasicPageComponent implements OnInit {
   constructor( private fb: FormBuilder) { }
 
   ngOnInit(): void {
-        this.myForm.reset( rtx5090 )
+    //this.myForm.reset( rtx5090 )
   }
 
   onSave(): void {
-    if (this.myForm.invalid ) return;
+    if (this.myForm.invalid ) {
+      /*
+      * Normalmente en los formularios, nosotros en el html trabajamos las validaciones cuando fueron tocadas, entonces
+      * para evitar que el usuaria haga un submit del formulario y se rechaze y no aparezaca nada, nosotros hacemos uso,
+      * de 'markAsTouched' para que aparezcan nuestras validaciones.
+      */
+
+      this.myForm.markAsTouched();
+      return;
+    }
     console.log(this.myForm.value);
 
     this.myForm.reset({ price: 10 , inStorage: 0 });
